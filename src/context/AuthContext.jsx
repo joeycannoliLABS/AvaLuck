@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
@@ -6,6 +6,11 @@ export function AuthProvider({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [address, setAddress] = useState('');
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const connect = () => {
     setIsConnected(true);
@@ -19,15 +24,18 @@ export function AuthProvider({ children }) {
   };
 
   const toggleAdmin = () => setIsAdmin(prev => !prev);
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   return (
     <AuthContext.Provider value={{
       isConnected,
       isAdmin,
       address,
+      theme,
       connect,
       disconnect,
       toggleAdmin,
+      toggleTheme,
     }}>
       {children}
     </AuthContext.Provider>
