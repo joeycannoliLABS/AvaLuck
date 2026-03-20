@@ -293,7 +293,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'Raffles', path: '/' },
-    { label: 'My tickets', path: '/my-tickets' },
+    { label: 'MyLuck', path: '/my-luck' },
     { label: 'Create', path: '/create' },
     { label: 'Leaderboard', path: '/leaderboard' },
   ];
