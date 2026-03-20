@@ -107,7 +107,7 @@ export default function CreateRafflePage() {
               display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            <span style={{ fontSize: 16 }}>🔺</span> Avalanche Raffle
+            <img src="/avalanche_logo.png" alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} /> Avalanche Raffle
           </button>
         )}
       </div>
