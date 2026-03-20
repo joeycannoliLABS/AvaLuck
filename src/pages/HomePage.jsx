@@ -271,7 +271,7 @@ export default function HomePage() {
             color: 'white', fontSize: 15, fontWeight: 700,
             cursor: 'pointer', letterSpacing: 0.3, display: 'inline-block',
           }}>
-            Explore raffles
+            Explore Raffles
           </a>
           <Link to="/create" style={{
             padding: '14px 36px', borderRadius: 12,
@@ -279,7 +279,7 @@ export default function HomePage() {
             background: 'var(--card-bg)', color: 'var(--text-primary)',
             fontSize: 15, fontWeight: 600, display: 'inline-block',
           }}>
-            Create raffle
+            Create Raffle
           </Link>
         </div>
       </section>
