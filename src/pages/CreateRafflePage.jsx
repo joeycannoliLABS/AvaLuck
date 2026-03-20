@@ -68,7 +68,7 @@ export default function CreateRafflePage() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px 80px' }}>
-      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Create a raffle</h1>
+      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Create a Raffle</h1>
       <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 32 }}>
         {isAdmin
           ? 'As an admin, you can create Avalanche official raffles or community raffles.'
@@ -93,7 +93,7 @@ export default function CreateRafflePage() {
             display: 'flex', alignItems: 'center', gap: 8,
           }}
         >
-          <span style={{ fontSize: 16 }}>💰</span> Community raffle
+          <span style={{ fontSize: 16 }}>💰</span> Community Raffle
         </button>
         {isAdmin && (
           <button
@@ -107,7 +107,7 @@ export default function CreateRafflePage() {
               display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            <span style={{ fontSize: 16 }}>🔺</span> Avalanche raffle
+            <span style={{ fontSize: 16 }}>🔺</span> Avalanche Raffle
           </button>
         )}
       </div>
@@ -124,7 +124,7 @@ export default function CreateRafflePage() {
           borderRadius: 20, padding: 32,
         }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 24 }}>
-            {isAvalanche ? 'Avalanche raffle details' : 'Community raffle details'}
+            {isAvalanche ? 'Avalanche raffle details' : 'Community Raffle Details'}
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
