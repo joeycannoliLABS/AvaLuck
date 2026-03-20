@@ -48,7 +48,7 @@ function WalletDropdown({ isOpen, onClose }) {
           $0.00
         </div>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-          Combined fiat + crypto value
+          Combined fiat + Crypto value
         </div>
       </div>
 
