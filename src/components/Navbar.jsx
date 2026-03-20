@@ -325,7 +325,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ display: 'flex', gap: 24 }} className="desktop-nav">
             {navLinks.map(link => (
               <Link
@@ -445,7 +445,7 @@ export default function Navbar() {
           </div>
 
           {isConnected ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               {/* Admin toggle (for demo) */}
               <button
                 onClick={toggleAdmin}
