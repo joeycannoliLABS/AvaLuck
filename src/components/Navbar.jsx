@@ -120,12 +120,164 @@ function WalletDropdown({ isOpen, onClose }) {
   );
 }
 
+function NotificationDropdown({ isOpen, onClose, notifications, isConnected }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) onClose();
+    };
+    if (isOpen) document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const typeIcons = {
+    win: '🏆',
+    announcement: '📢',
+    news: '📰',
+  };
+
+  return (
+    <div ref={ref} style={{
+      position: 'absolute',
+      top: 'calc(100% + 8px)',
+      right: 0,
+      width: 340,
+      background: 'var(--card-bg)',
+      border: '1px solid var(--card-border)',
+      borderRadius: 16,
+      padding: 0,
+      zIndex: 200,
+      animation: 'scaleIn 0.15s ease',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '14px 20px',
+        borderBottom: '1px solid var(--card-border)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
+          Notifications
+        </span>
+        {isConnected && notifications.filter(n => n.unread).length > 0 && (
+          <span style={{
+            fontSize: 11, fontWeight: 600,
+            background: 'rgba(232,65,66,0.15)',
+            color: 'var(--avax-red)',
+            padding: '2px 8px',
+            borderRadius: 10,
+          }}>
+            {notifications.filter(n => n.unread).length} new
+          </span>
+        )}
+      </div>
+
+      {!isConnected ? (
+        <div style={{ padding: '32px 20px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>🔔</div>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: 0 }}>
+            Connect your wallet to receive notifications
+          </p>
+        </div>
+      ) : notifications.length === 0 ? (
+        <div style={{ padding: '32px 20px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>✨</div>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: 0 }}>
+            No notifications yet
+          </p>
+        </div>
+      ) : (
+        <div style={{ maxHeight: 320, overflow: 'auto' }}>
+          {notifications.map(notif => (
+            <div
+              key={notif.id}
+              style={{
+                padding: '12px 20px',
+                borderBottom: '1px solid var(--card-border)',
+                display: 'flex',
+                gap: 12,
+                alignItems: 'flex-start',
+                background: notif.unread ? 'rgba(232,65,66,0.03)' : 'transparent',
+                cursor: 'pointer',
+                transition: 'background 0.15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--surface)'}
+              onMouseLeave={e => e.currentTarget.style.background = notif.unread ? 'rgba(232,65,66,0.03)' : 'transparent'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: 8,
+                background: 'var(--surface)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 16, flexShrink: 0,
+              }}>
+                {typeIcons[notif.type] || '📌'}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                  <span style={{
+                    fontSize: 13, fontWeight: 600,
+                    color: 'var(--text-primary)',
+                  }}>
+                    {notif.title}
+                  </span>
+                  {notif.unread && (
+                    <span style={{
+                      width: 6, height: 6, borderRadius: '50%',
+                      background: 'var(--avax-red)',
+                      flexShrink: 0,
+                    }} />
+                  )}
+                </div>
+                <p style={{
+                  fontSize: 12, color: 'var(--text-secondary)',
+                  margin: 0, lineHeight: 1.4,
+                  overflow: 'hidden', textOverflow: 'ellipsis',
+                  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                }}>
+                  {notif.message}
+                </p>
+                <span style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4, display: 'block' }}>
+                  {notif.time}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isConnected && notifications.length > 0 && (
+        <div style={{
+          padding: '10px 20px',
+          borderTop: '1px solid var(--card-border)',
+          textAlign: 'center',
+        }}>
+          <span style={{ fontSize: 12, color: 'var(--avax-red)', fontWeight: 600, cursor: 'pointer' }}>
+            Mark all as read
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [walletOpen, setWalletOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const location = useLocation();
   const { isConnected, isAdmin, address, connect, disconnect, toggleAdmin } = useAuth();
+
+  const notifications = [
+    { id: 1, type: 'win', title: 'You won!', message: 'Congratulations! You won the 500 AVAX Giveaway raffle.', time: '2 min ago', unread: true },
+    { id: 2, type: 'announcement', title: 'New Avalanche Raffle', message: 'A Rolex Submariner has been listed. Get your tickets now!', time: '1 hour ago', unread: true },
+    { id: 3, type: 'news', title: 'Platform update', message: 'Community raffles now support all ERC-20 tokens on Avalanche.', time: '3 hours ago', unread: false },
+    { id: 4, type: 'win', title: 'Raffle ended', message: 'The MacBook Pro raffle has ended. Winner being drawn...', time: '5 hours ago', unread: false },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -136,6 +288,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
     setWalletOpen(false);
+    setNotifOpen(false);
   }, [location]);
 
   const navLinks = [
@@ -202,6 +355,40 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* Notification bell */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setNotifOpen(!notifOpen)}
+              style={{
+                width: 38, height: 38, borderRadius: 10,
+                border: '1px solid var(--card-border)',
+                background: notifOpen ? 'var(--surface)' : 'transparent',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s',
+                position: 'relative',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-muted)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+              onMouseLeave={e => { if (!notifOpen) { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}}
+            >
+              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              {isConnected && notifications.length > 0 && (
+                <span style={{
+                  position: 'absolute', top: 4, right: 4,
+                  width: 8, height: 8, borderRadius: '50%',
+                  background: 'var(--avax-red)',
+                  border: '2px solid var(--dark-bg)',
+                }} />
+              )}
+            </button>
+            <NotificationDropdown isOpen={notifOpen} onClose={() => setNotifOpen(false)} notifications={notifications} isConnected={isConnected} />
+          </div>
+
+          {/* Wallet icon */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setWalletOpen(!walletOpen)}
