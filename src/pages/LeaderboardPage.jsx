@@ -11,7 +11,7 @@ export default function LeaderboardPage() {
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px 80px' }}>
       <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Leaderboard</h1>
       <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 32 }}>
-        Top winners and recent activity on AVAXRaffle.
+        Top winners and recent activity on AvaLuck.
       </p>
 
       {/* Tabs */}
