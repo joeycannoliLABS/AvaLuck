@@ -429,7 +429,7 @@ export default function CreateRafflePage() {
               onMouseEnter={e => e.target.style.transform = 'scale(1.02)'}
               onMouseLeave={e => e.target.style.transform = 'scale(1)'}
             >
-              {isConnected ? 'Create raffle' : 'Connect wallet to create'}
+              {isConnected ? 'Create Raffle' : 'Connect wallet to create'}
             </button>
           </div>
         </div>
@@ -531,11 +531,11 @@ export default function CreateRafflePage() {
               {raffleType === 'avalanche' ? 'How Avalanche raffles work' : 'How community raffles work'}
             </h3>
             {(raffleType === 'avalanche' ? [
-              { step: '1', text: 'Approve your NFT for the raffle contract' },
+              { step: '1', text: 'Fill out the details of the raffle' },
               { step: '2', text: 'Upload an image and set raffle details' },
-              { step: '3', text: 'Your NFT is escrowed in the smart contract' },
+              { step: '3', text: 'Your prize is escrowed in the smart contract' },
               { step: '4', text: 'Once sold out or time expires, Chainlink VRF draws the winner' },
-              { step: '5', text: 'Winner receives the NFT, you receive the AVAX' },
+              { step: '5', text: 'Winner is selected, you receive the AVAX' },
             ] : [
               { step: '1', text: 'Select the token you want to raffle' },
               { step: '2', text: 'Approve and deposit tokens into escrow' },
@@ -576,7 +576,7 @@ export default function CreateRafflePage() {
             {[
               { label: 'Raffle creation', value: 'Free', color: 'var(--accent-teal)' },
               { label: 'Platform fee', value: '2.5%', color: 'var(--text-primary)' },
-              { label: 'Winner receives', value: raffleType === 'avalanche' ? 'NFT (100%)' : 'Tokens (100%)', color: 'var(--text-primary)' },
+              { label: 'Winner receives', value: raffleType === 'avalanche' ? 'Prize (100%)' : 'Tokens (100%)', color: 'var(--text-primary)' },
             ].map(row => (
               <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                 <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>{row.label}</span>
