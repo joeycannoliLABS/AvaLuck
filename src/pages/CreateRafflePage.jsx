@@ -124,7 +124,7 @@ export default function CreateRafflePage() {
           borderRadius: 20, padding: 32,
         }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 24 }}>
-            {isAvalanche ? 'Avalanche raffle details' : 'Community Raffle Details'}
+            {isAvalanche ? 'Avalanche Raffle Details' : 'Community Raffle Details'}
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
