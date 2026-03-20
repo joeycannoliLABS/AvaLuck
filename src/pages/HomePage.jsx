@@ -245,7 +245,7 @@ export default function HomePage() {
           fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 800,
           lineHeight: 1.1, marginBottom: 20, letterSpacing: -1,
         }}>
-          Win NFTs with<br />
+          Win prizes with<br />
           <span style={{
             background: 'linear-gradient(135deg, var(--avax-red), #FF6B6B, var(--accent-gold))',
             backgroundSize: '200% auto',
@@ -261,7 +261,7 @@ export default function HomePage() {
           fontSize: 18, color: 'var(--text-secondary)',
           maxWidth: 560, margin: '0 auto 36px', lineHeight: 1.6,
         }}>
-          The fairest NFT raffle platform on Avalanche. Buy tickets, win prizes, and verify every draw on-chain with Chainlink VRF.
+          The fairest raffle platform on Avalanche. Buy tickets, win prizes, and verify every draw on-chain with Chainlink VRF.
         </p>
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
