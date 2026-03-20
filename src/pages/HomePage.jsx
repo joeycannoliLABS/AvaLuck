@@ -298,7 +298,7 @@ export default function HomePage() {
       <div id="avalanche-raffles">
         <RaffleSection
           title="Avalanche Raffles"
-          description={Premium prizes hand-picked by Avalanche. Every item verified, escrowed, and delivered to the winner}
+          description="Premium prizes hand-picked by Avalanche. Every item verified, escrowed, and delivered to the winner."
           raffles={AVAX_RAFFLES}
           featuredRaffles={AVAX_FEATURED}
           livePath="/raffles/avalanche/live"
