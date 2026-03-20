@@ -2,17 +2,35 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AvaxLogo, ProgressBar, Badge } from './ui';
 import { getTokenLogo, TokenFallbackIcon } from '../data/tokenLogos';
+import { useAuth } from '../context/AuthContext';
 
 export default function RaffleCard({ raffle }) {
   const [hovered, setHovered] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
   const navigate = useNavigate();
+  const { isConnected, isWatchlisted, toggleWatchlist } = useAuth();
   const pct = Math.round((raffle.ticketsSold / raffle.totalTickets) * 100);
   const isEnded = raffle.status === 'ended';
   const isAlmostFull = pct >= 90 && !isEnded;
   const isCrypto = raffle.type === 'crypto';
+  const watched = isWatchlisted(raffle.id);
 
   const tokenLogo = isCrypto ? getTokenLogo(raffle.prizeToken) : null;
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/raffle/${raffle.id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    });
+  };
+
+  const handleWatchlist = (e) => {
+    e.stopPropagation();
+    toggleWatchlist(raffle.id);
+  };
 
   return (
     <div
@@ -42,6 +60,93 @@ export default function RaffleCard({ raffle }) {
         </div>
       )}
 
+      {/* Action buttons — top left (or right if no almostFull badge) */}
+      <div style={{
+        position: 'absolute',
+        top: 12,
+        left: isAlmostFull ? 'auto' : 12,
+        right: isAlmostFull ? (raffle.featured ? 'auto' : 12) : 'auto',
+        zIndex: 3,
+        display: 'flex',
+        gap: 6,
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.2s ease',
+      }}>
+        {/* Watchlist heart */}
+        <button
+          onClick={handleWatchlist}
+          title={watched ? 'Remove from watchlist' : 'Add to watchlist'}
+          style={{
+            width: 32, height: 32, borderRadius: 8,
+            border: 'none',
+            background: watched ? 'rgba(232,65,66,0.9)' : 'rgba(0,0,0,0.6)',
+            backdropFilter: 'blur(8px)',
+            color: watched ? 'white' : 'rgba(255,255,255,0.8)',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s',
+          }}
+        >
+          <svg width={14} height={14} viewBox="0 0 24 24"
+            fill={watched ? 'currentColor' : 'none'}
+            stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        </button>
+
+        {/* Share */}
+        <button
+          onClick={handleShare}
+          title="Copy raffle link"
+          style={{
+            width: 32, height: 32, borderRadius: 8,
+            border: 'none',
+            background: showCopied ? 'rgba(46,205,167,0.9)' : 'rgba(0,0,0,0.6)',
+            backdropFilter: 'blur(8px)',
+            color: 'rgba(255,255,255,0.8)',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s',
+          }}
+        >
+          {showCopied ? (
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Always-visible watchlist indicator (when watched but not hovered) */}
+      {watched && !hovered && (
+        <div style={{
+          position: 'absolute',
+          top: 12, left: isAlmostFull ? 'auto' : 12,
+          right: isAlmostFull ? 12 : 'auto',
+          zIndex: 3,
+        }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: 7,
+            background: 'rgba(232,65,66,0.85)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width={12} height={12} viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+          </div>
+        </div>
+      )}
+
       {/* Image Preview */}
       <div style={{
         height: 180,
@@ -65,7 +170,6 @@ export default function RaffleCard({ raffle }) {
         }} />
 
         {isCrypto ? (
-          // Crypto: show token logo
           tokenLogo && !imgError ? (
             <img
               src={tokenLogo}
@@ -84,7 +188,6 @@ export default function RaffleCard({ raffle }) {
             <TokenFallbackIcon symbol={raffle.prizeToken} size={80} />
           )
         ) : (
-          // NFT: show uploaded image or placeholder
           raffle.image && !imgError ? (
             <img
               src={raffle.image}
