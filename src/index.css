@@ -16,6 +16,18 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+[data-theme="light"] {
+  --dark-bg: #F5F6F8;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E5EA;
+  --surface: #F0F1F4;
+  --text-primary: #111827;
+  --text-secondary: #5A6678;
+  --text-muted: #8B95A5;
+  --accent-teal: #0FA67E;
+  --accent-gold: #D4890E;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
